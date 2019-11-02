@@ -3,6 +3,8 @@ provider "aws" {
   profile = "terraform_emr"
 }
 
+# use terraform apply -var-file="fixtures.eu-west-1.tfvars"
+
 module "vpc" {
   source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.7.0"
   namespace  = var.namespace
