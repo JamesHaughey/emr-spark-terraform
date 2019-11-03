@@ -2,7 +2,7 @@ region = "eu-west-1"
 
 availability_zones = ["eu-west-1a"]
 
-namespace = "spark-testing"
+namespace = "spark-testing-2"
 
 stage = "dev"
 
@@ -14,7 +14,7 @@ visible_to_all_users = true
 
 release_label = "emr-5.25.0"
 
-applications = ["Spark", "Hadoop", "Ganglia", "Zeppelin", "JupyterHub"]
+applications = ["Spark", "Hadoop"]
 
 core_instance_group_instance_type = "m4.large"
 

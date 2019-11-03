@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region
+  region  = var.region
   profile = "terraform_emr"
 }
 
@@ -51,7 +51,7 @@ module "emr_cluster" {
   namespace                                      = var.namespace
   stage                                          = var.stage
   name                                           = var.name
-  master_allowed_security_groups                 = [module.vpc.vpc_default_security_group_id]
+  master_allowed_security_groups                 = [module.vpc.vpc_default_security_group_id, aws_security_group.allow_ssh.id]
   slave_allowed_security_groups                  = [module.vpc.vpc_default_security_group_id]
   region                                         = var.region
   vpc_id                                         = module.vpc.vpc_id
@@ -76,4 +76,41 @@ module "emr_cluster" {
   create_task_instance_group                     = var.create_task_instance_group
   log_uri                                        = format("s3://%s", module.s3_log_storage.bucket_id)
   key_name                                       = module.aws_key_pair.key_name
+}
+
+resource "aws_instance" "bastion" {
+  ami                         = "ami-02df9ea15c1778c9c"
+  instance_type               = "t2.micro"
+  subnet_id                   = module.subnets.public_subnet_ids[0]
+  key_name                    = module.aws_key_pair.key_name
+  associate_public_ip_address = true
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+
+
+  tags = {
+    Name = "Spark_Bastion"
+
+  }
+}
+
+resource "aws_security_group" "allow_ssh" {
+  name_prefix = "SparkBastionSG"
+  description = "Allow inbound SSH traffic"
+  vpc_id      = module.vpc.vpc_id
+  ingress {
+    # TLS (change to whatever ports you need)
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    # Please restrict your ingress to only necessary IPs and ports.
+    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
+    cidr_blocks = ["79.66.135.229/32"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
 }
