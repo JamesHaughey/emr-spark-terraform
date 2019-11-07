@@ -14,7 +14,7 @@ visible_to_all_users = true
 
 release_label = "emr-5.25.0"
 
-applications = ["Spark", "Hadoop"]
+applications = ["Spark", "Hadoop", "Livy", "Hive"]
 
 core_instance_group_instance_type = "m4.large"
 

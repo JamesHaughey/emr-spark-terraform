@@ -77,3 +77,8 @@ output "cluster_master_host" {
   value       = module.emr_cluster.master_host
   description = "Name of the cluster CNAME record for the master nodes in the parent DNS zone"
 }
+
+output "bastion_ip" {
+  value       = aws_instance.bastion.public_ip
+  description = "The Public IP addresso the bastion host"
+}
