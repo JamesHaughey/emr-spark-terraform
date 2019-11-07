@@ -8,8 +8,9 @@ A terraform stack for launching an AWS EMR cluster
 ## Connecting to EMR via JupyerLab Instructions
 
 * Stand up resources via `terraform apply -var-file="fixtures.eu-west-1.tfvars"`
-* Create jump box as EMR resources are in a private network - `TODO` implement this in Terraform
+* Create jump box as EMR resources are in a private network
 * SSH into EMR master node and set up tunnel from remote localhost:8888 to your machine port 8880
+* Login as user `hadoop` to avoid permission errors
 * Install Anaconda - Python 3.6 tested and working with Spark worker nodes [Anaconda Archive][Anaconda-Archive-Link]
 * Add the following Environment variables to the .bashrc and reload the .bashrc script with `source .bashrc`
     
